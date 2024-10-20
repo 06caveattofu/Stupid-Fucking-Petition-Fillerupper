@@ -6,3 +6,4 @@ venv/
 .env
 people.json
 screens/
+push.sh
