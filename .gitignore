@@ -1,0 +1,8 @@
+names.json
+venv/
+.DS_Store
+.idea/
+.vscode/
+.env
+people.json
+screens/
