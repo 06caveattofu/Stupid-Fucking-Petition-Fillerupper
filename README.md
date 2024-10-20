@@ -96,7 +96,7 @@ Create the `.env` file, `names.json` file, and `screens/` directory.
 ```bash
 cp example.env .env
 cp names.example.json names.json
-cp -r screens-example screens
+cp -r screens-example/ screens/
 ```
 
 Edit `.env` as you see fit.
