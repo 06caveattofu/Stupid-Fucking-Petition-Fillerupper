@@ -61,6 +61,12 @@ Clone the repository
 git clone https://github.com/06caveattofu/Stupid-Fucking-Petition-Fillerupper.git
 ```
 
+Change directory to the project directory
+
+```bash
+cd Stupid-Fucking-Petition-Fillerupper
+```
+
 Create a virtual environment
 
 ```bash
