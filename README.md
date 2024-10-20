@@ -4,6 +4,8 @@ A stupid script to fill up [this stupid fucking petition](https://petition.theam
 
 ![in action](in_action.gif "In Action")
 
+### You can stop the script by bringing your mouse to any corner of the screen.
+
 ## Prerequisites
 
 * Google Chrome
