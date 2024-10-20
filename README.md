@@ -58,7 +58,7 @@ This is where you configure the scripts
 Clone the repository
 
 ```bash
-git clone 
+git clone https://github.com/06caveattofu/Stupid-Fucking-Petition-Fillerupper.git
 ```
 
 Create a virtual environment
