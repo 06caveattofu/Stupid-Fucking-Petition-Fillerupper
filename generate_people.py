@@ -188,6 +188,8 @@ def main():
 
         move_file_to_on_deck('people.json')
         print("Moved file to 'on_deck' folder.")
+        print("Sleeping for 2 seconds...")
+        time.sleep(2)
 
 
 

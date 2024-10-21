@@ -357,6 +357,8 @@ def main():
 
             random_micro_sleep()
             move_file_to_done(f'on-deck/{file}')
+        print("Sleeping for 2 seconds...")
+        time.sleep(2)
 
 
 if __name__ == "__main__":
