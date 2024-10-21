@@ -48,6 +48,14 @@ def move_and_click(position, retina_display=False):
     )
     pyautogui.click()
 
+def move_and_click_manual_address_button(position, retina_display=False):
+    x, y = position
+    pyautogui.moveTo(
+        x / (2 if retina_display else 1) + random.randint(23, 30),
+        y / (2 if retina_display else 1) + random.randint(1, 3),
+        duration=0.5
+    )
+    pyautogui.click()
 
 def move_and_click_address_from_dropdown(position, retina_display=False):
     x, y = position
@@ -219,7 +227,7 @@ def main():
                 if not manual_address_pos:
                     print('Manual address button not found!')
                     continue
-                move_and_click(manual_address_pos, retina_display)
+                move_and_click_manual_address_button(manual_address_pos, retina_display)
                 random_micro_sleep()
                 random_micro_sleep()
                 random_micro_sleep()
