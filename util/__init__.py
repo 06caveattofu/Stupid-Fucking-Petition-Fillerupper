@@ -8,16 +8,17 @@ from dotenv import load_dotenv
 def read_env():
     load_dotenv()
     return {
-        'retina_display': True if os.getenv('RETINA_DISPLAY', '').lower().startswith('t') else False,
+        'retina_display': True if os.getenv('RETINA_DISPLAY', 'false').lower().startswith('t') else False,
         'people_to_generate': int(os.getenv('PEOPLE_TO_GENERATE', 100)),
         'sleep_for_addresses': int(os.getenv('SLEEP_FOR_ADDRESSES', 3)),
-        'use_proxy': True if os.getenv('USE_PROXY', '').lower().startswith('t') else False,
-        'proxy_auth': True if os.getenv('PROXY_AUTH', '').lower().startswith('t') else False,
+        'use_proxy': True if os.getenv('USE_PROXY', 'false').lower().startswith('t') else False,
+        'proxy_auth': True if os.getenv('PROXY_AUTH', 'false').lower().startswith('t') else False,
         'proxy_host': os.getenv('PROXY_HOST', ''),
         'proxy_port': os.getenv('PROXY_PORT', ''),
         'proxy_user': os.getenv('PROXY_USER', ''),
         'proxy_pass': os.getenv('PROXY_PASS', ''),
         'proxy_type': os.getenv('PROXY_TYPE', 'http').strip().lower(),
+        'enable_failsafe': True if os.getenv('ENABLE_FAILSAFE', 'true').lower().startswith('t') else False,
     }
 
 

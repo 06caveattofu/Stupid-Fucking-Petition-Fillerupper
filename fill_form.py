@@ -153,6 +153,7 @@ def main():
 
     while True:
         config = read_env()
+        pyautogui.FAILSAFE = config['enable_failsafe']
         retina_display = config['retina_display']
         people_files = list_files()
 
