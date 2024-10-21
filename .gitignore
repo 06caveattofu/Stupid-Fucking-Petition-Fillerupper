@@ -9,3 +9,4 @@ screens/
 push.sh
 distrib_peeps.sh
 __pycache__
+*.pyc
