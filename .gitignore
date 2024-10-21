@@ -7,3 +7,5 @@ venv/
 people.json
 screens/
 push.sh
+distrib_peeps.sh
+__pycache__

@@ -48,6 +48,7 @@ def move_and_click(position, retina_display=False):
     )
     pyautogui.click()
 
+
 def move_and_click_manual_address_button(position, retina_display=False):
     x, y = position
     pyautogui.moveTo(
@@ -56,6 +57,7 @@ def move_and_click_manual_address_button(position, retina_display=False):
         duration=0.5
     )
     pyautogui.click()
+
 
 def move_and_click_address_from_dropdown(position, retina_display=False):
     x, y = position
@@ -122,6 +124,22 @@ def random_micro_sleep(min_sleep=0.3, max_sleep=0.8):
     time.sleep(random.uniform(min_sleep, max_sleep))
 
 
+def close_tab():
+    if platform.system().lower() == 'darwin':
+        pyautogui.keyUp('fn')
+        pyautogui.hotkey('command', 'w')
+    else:
+        pyautogui.hotkey('ctrl', 'w')
+
+
+def new_tab():
+    if platform.system().lower() == 'darwin':
+        pyautogui.keyUp('fn')
+        pyautogui.hotkey('command', 't')
+    else:
+        pyautogui.hotkey('ctrl', 't')
+
+
 def main():
     time.sleep(5)  # Wait for 5 seconds before taking the screenshot
     # Define the reference images for the form fields
@@ -166,12 +184,8 @@ def main():
 
                 # Open a new tab in the browser
                 # If macOS, use 'command' instead of 'ctrl'
-                if platform.system().lower() == 'darwin':
-                    pyautogui.keyUp('fn')
-                    pyautogui.hotkey('command', 't')
-                else:
-                    pyautogui.hotkey('ctrl', 't')
-
+                new_tab()
+                random_micro_sleep()
                 random_micro_sleep()
                 # Type the URL of the petition website
                 pyautogui.typewrite('https://petition.theamericapac.org/')
@@ -191,6 +205,7 @@ def main():
                 first_name_pos = find_element(first_name_ref, screenshot)
                 if not first_name_pos:
                     print('First name field not found!')
+                    close_tab()
                     continue
                 move_and_click(first_name_pos, retina_display)
                 random_micro_sleep()
@@ -200,6 +215,7 @@ def main():
                 last_name_pos = find_element(last_name_ref, screenshot)
                 if not last_name_pos:
                     print('Last name field not found!')
+                    close_tab()
                     continue
                 move_and_click(last_name_pos, retina_display)
                 random_micro_sleep()
@@ -209,6 +225,7 @@ def main():
                 email_pos = find_element(email_ref, screenshot)
                 if not email_pos:
                     print('Email field not found!')
+                    close_tab()
                     continue
                 move_and_click(email_pos, retina_display)
                 random_micro_sleep()
@@ -218,6 +235,7 @@ def main():
                 phone_pos = find_element(phone_ref, screenshot)
                 if not phone_pos:
                     print('Phone field not found!')
+                    close_tab()
                     continue
                 move_and_click(phone_pos, retina_display)
                 random_micro_sleep()
@@ -227,6 +245,7 @@ def main():
                 manual_address_pos = find_element(use_manual_address_ref, screenshot)
                 if not manual_address_pos:
                     print('Manual address button not found!')
+                    close_tab()
                     continue
                 move_and_click_manual_address_button(manual_address_pos, retina_display)
                 random_micro_sleep()
@@ -247,6 +266,7 @@ def main():
                 city_pos = find_element(city_ref, screenshot)
                 if not city_pos:
                     print('City field not found!')
+                    close_tab()
                     continue
                 move_and_click(city_pos, retina_display)
                 random_micro_sleep()
@@ -256,6 +276,7 @@ def main():
                 state_dropdown_pos = find_element(state_dropdown_ref, screenshot)
                 if not state_dropdown_pos:
                     print('State dropdown not found!')
+                    close_tab()
                     continue
                 move_and_click(state_dropdown_pos, retina_display)
                 random_micro_sleep()
@@ -290,6 +311,7 @@ def main():
                         random_micro_sleep(min_sleep=0.008, max_sleep=0.05)
                 else:
                     print('State not found!')
+                    close_tab()
                     continue
                 pyautogui.keyUp('fn')
                 pyautogui.press('enter')
@@ -298,6 +320,7 @@ def main():
                 zip_pos = find_element(zip_ref, screenshot)
                 if not zip_pos:
                     print('Zip field not found!')
+                    close_tab()
                     continue
                 move_and_click(zip_pos, retina_display)
                 random_micro_sleep()
@@ -344,16 +367,15 @@ def main():
                     move_and_click_sign_button(sign_4_pos, retina_display)
                 else:
                     print('Sign button not found!')
+                    close_tab()
                     continue
                 random_micro_sleep()
                 random_micro_sleep()
 
                 # close the tab
-                if platform.system().lower() == 'darwin':
-                    pyautogui.keyUp('fn')
-                    pyautogui.hotkey('command', 'w')
-                else:
-                    pyautogui.hotkey('ctrl', 'w')
+                close_tab()
+                random_micro_sleep()
+                random_micro_sleep()
 
             random_micro_sleep()
             move_file_to_done(f'on-deck/{file}')
