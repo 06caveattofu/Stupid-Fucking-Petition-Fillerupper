@@ -103,7 +103,7 @@ def read_people(file_path: str):
         with open(file_path, 'r') as f:
             return json.load(f)
     except Exception:
-        return 0
+        return None
 
 
 def list_files():
@@ -177,6 +177,15 @@ def main():
 
         for file in people_files:
             people = read_people(f'on-deck/{file}')
+
+            if not people:
+                print('No people found in file!')
+                #delete the file
+                os.remove(f'on-deck/{file}')
+                print(f'Bad file: {file} deleted!')
+                continue
+
+
             for person in people:
                 print(person)
                 center_mouse(retina_display)
