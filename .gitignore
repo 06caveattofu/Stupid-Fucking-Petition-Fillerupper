@@ -10,3 +10,4 @@ push.sh
 distrib_peeps.sh
 __pycache__
 *.pyc
+*.cpython-312.pyc
