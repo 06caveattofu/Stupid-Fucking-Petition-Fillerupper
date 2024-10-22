@@ -169,6 +169,8 @@ def main():
     pa = 39
     wi = 50
 
+    bad_files = []
+
     while True:
         config = read_env()
         pyautogui.FAILSAFE = config['enable_failsafe']
@@ -179,12 +181,18 @@ def main():
             people = read_people(f'on-deck/{file}')
 
             if not people:
-                print('No people found in file!')
-                #delete the file
-                os.remove(f'on-deck/{file}')
-                print(f'Bad file: {file} deleted!')
-                continue
 
+                if file not in bad_files:
+                    bad_files.append(file)
+                    print(f'Bad file: {file} found!, skipping...')
+                else:
+                    print(f'Bad file: {file} found for the second time!, deleting...')
+                    os.remove(f'on-deck/{file}')
+                    people = []
+                    # remove the file from the list of bad files
+                    bad_files.remove(file)
+
+                continue
 
             for person in people:
                 print(person)
