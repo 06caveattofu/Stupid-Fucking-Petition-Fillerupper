@@ -191,7 +191,6 @@ def main():
                     people = []
                     # remove the file from the list of bad files
                     bad_files.remove(file)
-
                 continue
 
             for person in people:
