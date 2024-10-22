@@ -9,6 +9,7 @@ from faker import Faker
 from util import decompress_if_gzip, decode_and_parse_json, read_env
 from seleniumwire import webdriver
 from phone_gen import PhoneNumber
+from uuid import uuid4
 
 
 def get_random_addresses_by_state(driver: webdriver, state: str, sleep_for: int = 3, proxy=None):
@@ -125,8 +126,10 @@ def count_saved_people(file_path='people.json'):
 
 def move_file_to_on_deck(file_path: str):
     # rename the file to include the current date and time
-    os.rename(file_path,
-              f'on-deck/{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}_{os.path.basename(file_path)}')
+    os.rename(
+        file_path,
+        f'on-deck/{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}_{uuid4()}.json'
+    )
 
 
 def main():
@@ -190,7 +193,6 @@ def main():
         print("Moved file to 'on_deck' folder.")
         print("Sleeping for 2 seconds...")
         time.sleep(2)
-
 
 
 if __name__ == '__main__':

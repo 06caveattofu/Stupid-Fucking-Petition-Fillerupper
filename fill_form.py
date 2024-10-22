@@ -181,7 +181,6 @@ def main():
             people = read_people(f'on-deck/{file}')
 
             if not people:
-
                 if file not in bad_files:
                     bad_files.append(file)
                     print(f'Bad file: {file} found!, skipping...')
