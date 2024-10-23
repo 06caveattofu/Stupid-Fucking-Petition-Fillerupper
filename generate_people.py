@@ -80,6 +80,7 @@ def get_addresses(sleep_for: int = 3, proxy: dict = None):
 
     if raw_addresses is None:
         print("No addresses found.")
+        driver.close()
         driver.quit()
         return addresses
 
@@ -102,6 +103,7 @@ def get_addresses(sleep_for: int = 3, proxy: dict = None):
             'full': full
         }
         addresses.append(address)
+    driver.close()
     driver.quit()
     return addresses
 
@@ -133,66 +135,65 @@ def move_file_to_on_deck(file_path: str):
 
 
 def main():
-    while True:
-        config = read_env()
-        proxy = None
+    config = read_env()
+    proxy = None
+    count = count_saved_people()
+    if config['use_proxy']:
+        proxy_auth = f"{config['proxy_user']}:{config['proxy_pass']}@" if config['proxy_auth'] else ''
+        proxy_scheme_http = 'http' if config['proxy_type'] == 'http' else config['proxy_type']
+        proxy_scheme_https = 'https' if config['proxy_type'] == 'http' else config['proxy_type']
+        proxy = {
+            'http': f"{proxy_scheme_http}://{proxy_auth}{config['proxy_host']}:{config['proxy_port']}",
+            'https': f"{proxy_scheme_https}://{proxy_auth}{config['proxy_host']}:{config['proxy_port']}",
+            'no_proxy': 'localhost,127.0.0.1'
+        }
+
+    addr_proxy = proxy if config['use_proxy'] else None
+
+    names = read_names_from_file()
+
+    phone_generator = PhoneNumber('USA')
+    email_domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com']
+    fake = Faker(locale='en_US')
+
+    while count < config['people_to_generate']:
+        people = []
+        try:
+            addresses = get_addresses(sleep_for=config['sleep_for_addresses'], proxy=addr_proxy)
+        except Exception as e:
+            print('Error getting addresses:', e)
+            addresses = []
+            time.sleep(5)
+
+        for address in addresses:
+            phone = phone_generator.get_number(full=False)
+            name = random.choice(names)
+            email = (
+                    fake.word() +
+                    (('' if random.choice([True, False]) else '-') +
+                     fake.word() if random.choice([True, False]) else '') +
+                    (('' if random.choice([True, False]) else '-') +
+                     fake.word() if random.choice([True, False]) else '') +
+                    str(fake.random_number(digits=(random.randint(1, 5)))) +
+                    '@' + random.choice(email_domains)
+            )
+            my_person = Person(
+                first_name=name['first'],
+                last_name=name['last'],
+                address=address,
+                phone_number=phone,
+                email=email
+            )
+            print('Constructed', my_person.__repr__())
+            people.append(my_person)
+        save_people_to_file(people)
         count = count_saved_people()
-        if config['use_proxy']:
-            proxy_auth = f"{config['proxy_user']}:{config['proxy_pass']}@" if config['proxy_auth'] else ''
-            proxy_scheme_http = 'http' if config['proxy_type'] == 'http' else config['proxy_type']
-            proxy_scheme_https = 'https' if config['proxy_type'] == 'http' else config['proxy_type']
-            proxy = {
-                'http': f"{proxy_scheme_http}://{proxy_auth}{config['proxy_host']}:{config['proxy_port']}",
-                'https': f"{proxy_scheme_https}://{proxy_auth}{config['proxy_host']}:{config['proxy_port']}",
-                'no_proxy': 'localhost,127.0.0.1'
-            }
+        print(f"Generated {count} people.")
 
-        addr_proxy = proxy if config['use_proxy'] else None
-
-        names = read_names_from_file()
-
-        phone_generator = PhoneNumber('USA')
-        email_domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'mail.com']
-        fake = Faker(locale='en_US')
-
-        while count < config['people_to_generate']:
-            people = []
-            try:
-                addresses = get_addresses(sleep_for=config['sleep_for_addresses'], proxy=addr_proxy)
-            except Exception as e:
-                print('Error getting addresses:', e)
-                addresses = []
-                time.sleep(5)
-
-            for address in addresses:
-                phone = phone_generator.get_number(full=False)
-                name = random.choice(names)
-                email = (
-                        fake.word() +
-                        (('' if random.choice([True, False]) else '-') +
-                         fake.word() if random.choice([True, False]) else '') +
-                        (('' if random.choice([True, False]) else '-') +
-                         fake.word() if random.choice([True, False]) else '') +
-                        str(fake.random_number(digits=(random.randint(1, 5)))) +
-                        '@' + random.choice(email_domains)
-                )
-                my_person = Person(
-                    first_name=name['first'],
-                    last_name=name['last'],
-                    address=address,
-                    phone_number=phone,
-                    email=email
-                )
-                print('Constructed', my_person.__repr__())
-                people.append(my_person)
-            save_people_to_file(people)
-            count = count_saved_people()
-            print(f"Generated {count} people.")
-
-        move_file_to_on_deck('people.json')
-        print("Moved file to 'on_deck' folder.")
-        print("Sleeping for 2 seconds...")
-        time.sleep(2)
+    move_file_to_on_deck('people.json')
+    print("Moved file to 'on_deck' folder.")
+    print("Sleeping for 2 seconds...")
+    time.sleep(2)
 
 
 if __name__ == '__main__':
